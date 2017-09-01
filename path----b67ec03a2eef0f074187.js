@@ -1,0 +1,2 @@
+webpackJsonp([0x36dfee11ec260a00],{"./node_modules/json-loader/index.js!./.cache/json/layout-index.json":function(e,t){e.exports={data:{site:{siteMetadata:{title:"This is not 'Nam.",subtitle:"This is my blog. There are rules.",twitter:"alexisjanvier",github:"alexisjanvier",author:"Àlexis Janvier"}}},layoutContext:{}}}});
+//# sourceMappingURL=path----b67ec03a2eef0f074187.js.map
