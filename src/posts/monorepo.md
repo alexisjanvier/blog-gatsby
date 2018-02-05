@@ -8,9 +8,18 @@ tags:
 - Project
 ---
 
-J'ai vu passer pas mal de post de blog sur le sujet, et c'est aussi une technique mise en place sur la prochaine version de admin-on rest (branch next, renommer react-admin) pour laquelle Gildas est très entousiaste : le monorepo. L'idée est simple : plutôt que de gerer les différentes partie d'unn projet (un back et un front pour une appli, ou ses microservices, ou ses librairie) dans des repo séparer, on gère tout son code dans un seul repository. Certain l'utilise sur des base de code énormes (google, facebook, ...), d'autres possédant une très grannd nombre de repo (des librairie comme jest). Mais est-ce un avantage pour un projet plus classique ?
+Si le terme ***monorepo*** fait très technique, pour autant il traduit parfaitement un concept simplissime : utiliser un seul repository pour plusieurs projets.
 
-Comme souvent, pratique des grosses bases de codes (microservices, kafka, ...), mais qu'est ce que cela apporte à mon quotidien de dev sur des projets plus standards ?
+Et j’ai vu passer pas mal de posts de blog ces derniers temps sur le sujet, provenant le plus souvent de grosses boites ayant d’innombrables projets et d’innombrables développeurs, et donc d’innombrables dépôts de code. Le passage en monorepo pour ce type d’environnement est certainement très intéressant, mais très éloigné de mon quotidien.
+
+De même, le principe de cette approche n’est pas une découverte : on utilise depuis longtemps un unique repository pour gérer toutes les parties d’un même projet (une api back, un application cliente, une appli d’administration).
+
+Mais c’est en participant à la nouvelle branche d’admin-on-rest, renommée [react-admin]() que j’ai découvert de nouveaux outils dédiés au monorepo. Dans le cadre d’un projet open-source de librairie, on essaye de découper le code en plusieurs petites parties pour en faciliter l’utilisation, par exemple en évitant à l’utilisateur final de charger une librairie énorme dont il n’utiliserait que quelques fonctionnalités. Mais qui dit plusieurs parties dit beaucoup d’interdépendance entre chaque partie (et l’enfer du `npm link’) et plusieurs distributions (plusieurs repo ? :) ). 
+
+Sont donc apparus dans le monde du javascript des outils comme les workspaces Yarn ou le projet Lerna.   
+Si ils sont d’un indéniable intérêt pour les projets de types librairies, peuvent-ils apporter quelque chose au quotidien de projets plus classique orienté client ?
+
+
 
 ## Typologie de projet
 Je part une typologie de projet que je rencontre pas mal en ce moment : deux fronts (un pour l'admin et un pour l'application cliente) et un back (un express pour servir une api). Et générallement tout est en js ! 
@@ -77,9 +86,9 @@ Et peut-être pour les bases de codes gigantestque et les équipes de dev très 
  ==========
  
  References
- https://yarnpkg.com/en/docs/workspaces
- https://lernajs.io/
- https://github.com/facebook/create-react-app/issues/2461
+ https://yarnpkg.com/en/docs/workspaces    
+ https://lernajs.io/     
+ https://github.com/facebook/create-react-app/issues/2461     
  
  https://www.npmjs.com/package/eslint-config-react-app
  https://prettier.io/docs/en/eslint.html
