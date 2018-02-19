@@ -15,8 +15,6 @@ export default ({ data }) => {
             <div className="postIntro">
                 <h1>{post.frontmatter.title}</h1>
                 <p className="date">Publié le {format(post.frontmatter.date, 'DD MMMM YYYY', { locale })}</p>
-                <p className="tags">{`${post.frontmatter.tags}`}</p>
-                <p className="intro">{post.frontmatter.description}</p>
             </div>
 
             <div dangerouslySetInnerHTML={{ __html: post.html }} />

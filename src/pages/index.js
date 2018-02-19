@@ -11,7 +11,7 @@ export default ({ data }) => {
                     <Link to={node.frontmatter.slug}>
                         <h2>{node.frontmatter.title}</h2>
                         <h4>
-                            Publié le {format(node.frontmatter.date, 'DD MMMM YYYY', { locale })} <span>({`${node.frontmatter.tags}`})</span>
+                            Publié le {format(node.frontmatter.date, 'DD MMMM YYYY', { locale })}
                         </h4>
                         <p>{node.frontmatter.description}</p>
                     </Link>
