@@ -8,55 +8,152 @@ tags:
 - Project
 ---
 
-Si le terme ***monorepo*** fait très technique, pour autant il traduit parfaitement un concept simplissime : utiliser un seul repository pour plusieurs projets.
+Si le terme ***monorepo*** fait très technique, il traduit parfaitement un concept simplissime : utiliser un seul repository pour plusieurs projets.
 
-Et j’ai vu passer pas mal de posts de blog ces derniers temps sur le sujet, provenant le plus souvent de grosses boites ayant d’innombrables projets et d’innombrables développeurs, et donc d’innombrables dépôts de code. Le passage en monorepo pour ce type d’environnement est certainement très intéressant, mais très éloigné de mon quotidien.
+J’ai vu passer pas mal de posts de blog ces derniers temps sur le sujet, provenant le plus souvent de grosses boites ayant d’innombrables projets et d’innombrables développeurs, et donc d’innombrables dépôts de code. Le passage en monorepo pour ce type d’environnement est certainement très intéressant, mais très éloigné de mon quotidien.
 
-De même, le principe de cette approche n’est pas une découverte : on utilise depuis longtemps un unique repository pour gérer toutes les parties d’un même projet (une api back, un application cliente, une appli d’administration).
+Mais le principe de cette approche n’est pas une découverte : on utilise (chez Marmelab) depuis longtemps un unique repository pour gérer toutes les parties d’un même projet (une api back, une application cliente, une appli d’administration ...).
 
-Mais c’est en participant à la nouvelle branche d’admin-on-rest, renommée [react-admin]() que j’ai découvert de nouveaux outils dédiés au monorepo. Dans le cadre d’un projet open-source de librairie, on essaye de découper le code en plusieurs petites parties pour en faciliter l’utilisation, par exemple en évitant à l’utilisateur final de charger une librairie énorme dont il n’utiliserait que quelques fonctionnalités. Mais qui dit plusieurs parties dit beaucoup d’interdépendance entre chaque partie (et l’enfer du `npm link’) et plusieurs distributions (plusieurs repo ? :) ). 
+C’est en participant à la nouvelle version d’admin-on-rest, renommée [react-admin]() que j’ai découvert de nouveaux outils dédiés aux monorepos. 
 
-Sont donc apparus dans le monde du javascript des outils comme les workspaces Yarn ou le projet Lerna.   
-Si ils sont d’un indéniable intérêt pour les projets de types librairies, peuvent-ils apporter quelque chose au quotidien de projets plus classique orienté client ?
+## Le cas d'un projet de librairie (JavaScript)
+
+Dans le cadre d’un projet librairie, on essaye de découper le code en plusieurs petites parties pour en faciliter l’utilisation, par exemple en évitant à l’utilisateur final de charger une librairie énorme dont il n’utiliserait que quelques fonctionnalités. Mais qui dit plusieurs parties dit beaucoup d’interdépendance entre chaque partie (et l’enfer du `npm link`) et plusieurs packages à distribuer (plusieurs repo ? :) ). 
+
+Sont donc apparus dans le monde du JavaScript des outils comme les [workspaces Yarn](https://yarnpkg.com/en/docs/workspaces) ou le projet [Lerna](https://lernajs.io/ ).   
+S'ils sont d’un indéniable intérêt pour les projets de type librairie, peuvent-ils apporter quelque chose au quotidien de projets plus classiques orientés client ?
 
 
 
-## Typologie de projet
-Je part une typologie de projet que je rencontre pas mal en ce moment : deux fronts (un pour l'admin et un pour l'application cliente) et un back (un express pour servir une api). Et générallement tout est en js ! 
-Ce n'est pas un problème que de séparer ces trois partie au sein du même repo (c'est ce que je fais déja), mais chaque "projet" possède souvent ses propres dépendances, sa propre conf de style, et ses propres tests.
-Les outils développés pour les approches monorepo peuvent-il amélirer les choses
+## C'est quoi un "projet plus classique orienté client" ?
 
-## Yarn workspace
-Interêt : partage des dépendances. Interdépendances
+C'est pour ma part un projet qui va requérir : 
 
-Marce à suivre : create-reacte-app et graphcool init : creation du packahe.json et téléchargement des dep à l'instanciation.
-Donc une fois que c'est fait, suppression des node_modules et des yarn lock.
-Creation du packahe.json à la racine, puis yarn install.
+ * une api,
+ * une interface d'administration,
+ * une application (web et/ou mobile) publique.
 
-NOTE : Refaire, puis comparer la taille dans les trois repo, puis sur le monorepo.
+En en ce moment, tout est en JavaScript. Ce qui donne peu ou prou :
 
-## Eslint et prettier
+```bash
+.
+├── public
+│   ├── admin
+│   ├── api
+│   └── client
+├── src
+│   ├── admin
+|   |   ├── node_modules
+|   |   ├── package.json
+|   |   └── index.js
+│   ├── api
+|   |   ├── node_modules
+|   |   ├── package.json
+|   |   └── index.js
+│   └── client
+|       ├── node_modules
+|       ├── package.json
+|       └── index.js
+├── .gitignore
+├── README.md
+└── makefile
 
-Ajout de prettier, dans la workspace (je sias pas si c'est une bonne pratique ?)
-Et un eslintrc.json au la racine !
+```
 
-yarn add -DW prettier eslint-plugin-prettier eslint-config-prettier
-
-## Les tests et Jest
-
-Jest multi project mais marche pas avec react-create-app
-
-Solution Lerna comme lanceur de test, mais overkill pour mon cas
-
-Donc un jest qui va chercher partout, sauf que galère avec le create-reacct-app aussi
-
-donc au final un makefile
+On a un répertoire `public` pour les builds finaux, un répertoire `src` dans lequel on retrouve les trois "projets", chacun gérant ses dépendances (parfois les mêmes). Un `makefile` à la racine permet de lancer par exemple l'installation des dépendances des trois projets.
 
 ```makefile
-.PHONY: build help
+// in makefile
 
-help:
-	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+install-admin:
+	cd src/admin && yarn install
+
+install-api:
+	cd src/api && yarn install
+
+install-client:
+	cd src/client && yarn install
+
+install: install-admin install-api install-client
+
+```
+<br />
+
+> Du coup, les outils développés pour une approche monorepo peuvent-ils améliorer cette manière d'organiser mon code ?
+
+## Yarn workspace
+
+Les workspaces yarn sont disponibles depuis la version `1.0`. L'utilisation de ces workspaces va permettre de déclarer un `package.json` *parent* dans lequel on va indiquer à yarn où sont nos `package.json` *enfants* (ceux de nos trois projets). Yarn pourra ainsi se débrouiller depuis la racine du projet pour installer toutes les dépendances, et surtout mettre toutes celles communes dans un même répertoire node_modules à la racine du projet: c'est de l'espace disque et du temps d'installation de gagnés.
+
+Voici à quoi ressemble le package.json à la racine du site :
+
+```json
+{
+    "private": true,
+    "workspaces": [
+        "src/*"
+    ]
+}
+```
+
+**Les autres fichiers package.json n'ont pas à être modifiés.**
+
+Pour reprendre mon exemple précédent, l'installation du projet global prenait 333 Mo sur le disque. 
+
+```bash
+~/Code/sideprojects
+❯ du -hs seamanship
+333M    seamanship
+```
+
+Avec la mise en place des workspaces, le projet global ne prend plus que 186 Mo.
+
+```bash
+~/Code/sideprojects
+❯ du -hs seamanship
+186M    seamanship
+```
+
+***Remarque***: *lors de mes tests, les parties `admin` et `client` étaient bootstrappées avec `create-react-app`. Il a donc fallu que je crée mes deux répertoires avec un `create-react-app admin` et `create-react-app client` depuis `src`, ensuite que je supprime le `yarn.lock` et le répertoire `node_modules` des deux parties, pour enfin relancer un `yarn install` depuis la racine du projet afin de profiter des workspaces.*
+
+## Code styling
+
+Les workspace permettent de facilement mutualiser les dépendances entre les différentes parties d'un projet. Mais peut-on les utiliser pour gérer d'autres problématiques communes, comme la gestion du code styling ? 
+
+Essayons d'installer eslint à la racine du projet :
+
+```bash
+~/Code/sideprojects/seamanship master*
+❯ yarn add eslint
+yarn add v1.3.2
+error Running this command will add the dependency to the workspace root rather than workspa
+ce itself, which might not be what you want - if you really meant it, make it explicit by ru
+nning this command again with the -W flag (or --ignore-workspace-root-check).
+info Visit https://yarnpkg.com/en/docs/cli/add for documentation about this command.
+```
+
+Comme c'est vraiment ce que l'on veut, lançons donc :
+
+```bash
+yarn add -DW eslint prettier eslint-plugin-prettier eslint-config-prettier
+```
+
+Et tout se déroule normalement \o/.
+
+## Les tests
+
+Il reste encore une problématique à aborder dans cette rapide exploration des outils liés aux monorepos : peut-on simplifier le lancement de l'intégralité des **tests** du projet ?     
+
+Depuis sa version 20, Jest est capable de [lancer en parallèle les tests sur plusieurs projets](https://facebook.github.io/jest/docs/en/configuration.html#projects-array-string-projectconfig) :
+
+![Jest Multi-Project-Runner](/images/monorepo/20-multi-runner.gif)
+
+Pas de chance pour mon exploration qui se base sur deux applications *create-react-app*, [elles ne sont pas compatible avec cette fonctionnalité](https://github.com/facebook/create-react-app/issues/2461) :( 
+
+Il me faudra donc passer comme avant avant par un `makefile`
+
+```makefile
+// in makefile
 
 test-admin:
 	cd services/administration && NODE_ENV="test" CI=true yarn test
@@ -68,27 +165,48 @@ test: test-admin test-configurator
 
 ```
 
+### Lerna
+
+Avant de conclure, j'ajouterais quelques mots sur un projet cité en introduction: [Lerna](https://lernajs.io/).    
+Lerna est un outil qui permet principalement de **partager** du code au sein d'un monorepo.   
+
+Imaginons une librairie que l'on a divisé un plusieures parties, avec un *core* commun et des fonctionnalitées séparées en packages distincts. Chaque package va dépendre du *core*.
+
+```json
+// in packages/ra-core/package.json du projet react-admin
+{
+    "name": "ra-core",
+    "version": "2.0.0-beta2",
+	...
+}
+```
+
+```json
+// in packages/react-admin/package.json du projet react-admin
+{
+    "name": "react-admin",
+    "version": "2.0.0-beta2",
+    ...
+    "dependencies": {
+        "ra-language-english": "^2.0.0-beta2",
+        "ra-core": "^2.0.0-beta2",
+        "ra-ui-materialui": "^2.0.0-beta2"
+    }
+}
+```
+
+Maintenant, si l'on modifie le *core*, il faudrait le publier pour pouvoir le tester au sein des autres packages !    
+Lerna va permettre d'utiliser le code du *core* présent dans le monorepo comme un package déja publié. C'est ce que fait `npm link` mais Lerna le fait mieux, et plus simplement.
+
+Dans notre cas - celui d'un petit projet - on ne partage que des fonctionnalités entre nos différentes parties du dépôt, pas de code ! Lerna n'a donc pas d'intérêt (ou en tout cas, je ne l'ai pas vu).   
+
+Par contre, dès lors que l'on va avoir besoin d'isoler du code commun entre plusieurs de ces parties du projet, par exemple un *style guide** utilisé par une appli web et une appli mobile, Lerna prendra tout son sens.
 
 ## Conclusion
 
-Bin sur le principe, pas grand chose si on a déja ses services dans un seul repo.
-Un petit plus pour le poids, mais sinon, lint et tests identique (surtout avec des bootstrapper et leur auto-config). Pareil pour le déploiement pas aborder ici.
+L’utilisation d’un monorepo pour gérer un projet client est une évidence quand bien même les différentes parties du projet (api, front, mobile) seraient sur des technos différentes.
 
-Non, cela semble vraiment super pour des projets de lib ou lerna semble un gros plus (déploiement npm, gestion des dépendances entre les partties de la lib, tests non bootstrappés, etc) ...
-Et peut-être pour les bases de codes gigantestque et les équipes de dev très nombreuse ... mais ca, je ne sais pas.
+Dans ce cadre et si plus d’une des parties est basée sur JavaScript, l’utilisation des workspaces Yarn, sans apporter énormément, permet de gagner de l’espace disque et du temps d’installation. C’est déjà ça.   
+Des outils plus classiques (Eslint, Jest) se prêtent également bien à ce mode de gestion du code.
 
- ========
- 
- Pas de dépenance entre les versions des projets
- Super pour des lib + LERNA
- Quels outils de déploiements.
- 
- ==========
- 
- References
- https://yarnpkg.com/en/docs/workspaces    
- https://lernajs.io/     
- https://github.com/facebook/create-react-app/issues/2461     
- 
- https://www.npmjs.com/package/eslint-config-react-app
- https://prettier.io/docs/en/eslint.html
+Les monorepos ne sont pas une révolution donc, mais une évolution positive vers une meilleure gestion de notre quotidien de développeur.
