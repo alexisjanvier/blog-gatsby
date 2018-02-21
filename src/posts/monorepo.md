@@ -1,7 +1,7 @@
 ---
 title: "Un monorepo pour les petits projets"
 slug: "monorepo"
-date: "2018-02-04"
+date: "2018-02-21"
 description: "Plébiscitée sur les grosses bases de code, l’utilisation d’un monorepo sur un projet de librairies est un indéniable plus. Mais qu’en est-il sur les projets plus standards ?"
 tags:
 - Git
@@ -97,6 +97,33 @@ Voici à quoi ressemble le package.json à la racine du site :
 ```
 
 **Les autres fichiers package.json n'ont pas à être modifiés.**
+
+```bash
+.
+├── node_modules
+├── public
+│   ├── admin
+│   ├── api
+│   └── client
+├── src
+│   ├── admin
+|   |   ├── node_modules
+|   |   ├── package.json
+|   |   └── index.js
+│   ├── api
+|   |   ├── node_modules
+|   |   ├── package.json
+|   |   └── index.js
+│   └── client
+|       ├── node_modules
+|       ├── package.json
+|       └── index.js
+├── .gitignore
+├── package.json
+├── README.md
+└── makefile
+
+```
 
 Pour reprendre mon exemple précédent, l'installation du projet global prenait 333 Mo sur le disque. 
 
