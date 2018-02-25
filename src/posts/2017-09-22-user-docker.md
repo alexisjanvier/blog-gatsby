@@ -1,6 +1,7 @@
 ---
 title: "Associer un utilisateur à celui d'un container Docker"
 slug: "bind-user-on-docker-container"
+marmelab:
 date: "2017-09-22"
 tags:
   - "docker"

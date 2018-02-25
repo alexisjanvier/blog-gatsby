@@ -1,6 +1,7 @@
 ---
 title: "Bootstraping du projet ES6"
 slug: "bootstrapping_du_projet_en_es6"
+marmelab:
 date: "2016-02-09"
 tags:
     - "es6"
