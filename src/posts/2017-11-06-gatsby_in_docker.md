@@ -1,6 +1,7 @@
 ---
 title: "Développer un site Gasby.js avec Docker"
 slug: "gasby-avec-docker"
+marmelab:
 date: "2017-11-06"
 description: "En ce moment, j'utilise Gasby pour plusieurs sites (ce blog compris). Mais tous les contributeurs de ces sites ne veulent pas forcément installer Node sur leur machine. La solution évidente : Docker."
 tags:

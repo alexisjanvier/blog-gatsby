@@ -1,8 +1,11 @@
 ---
 title: "React Router v4, SSR, Redux Saga et Code Splitting sont dans un bateau"
 slug: "rr4-ssr-redux-code-splitting-dans-un-bateau"
+marmelab:
 date: "2017-10-22"
 description: "React est rapide, pour peu que l'on y applique les bonnes optimisations. Le code splitting et le server side rendering sont deux pistes permettant d'atteindre cet objectif. Utilisons-les toutes les deux sur une application s'appuyant sur Redux, Saga et React Router V4."
+image: /images/blog/code-splitting/splitting.jpg
+image1024x395: /images/blog/code-splitting/splitting.jpg
 tags:
 - React Router
 - SSR
