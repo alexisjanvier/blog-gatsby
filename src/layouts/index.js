@@ -1,6 +1,7 @@
 import Helmet from 'react-helmet';
 import Link from 'gatsby-link';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import TwitterIcon from '../icones/twitter.png';
 import GithubIcon from '../icones/github.png';
@@ -45,6 +46,10 @@ const Template = ({ children, data }) => (
         {children()}
     </div>
 );
+
+Template.propTypes = {
+    children: PropTypes.any
+};
 
 export const query = graphql`
     query NavBarQuery {

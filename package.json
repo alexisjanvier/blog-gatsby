@@ -8,6 +8,7 @@
         "serve": "gatsby serve"
     },
     "dependencies": {
+        "babel-plugin-transform-react-remove-prop-types": "0.4.13",
         "date-fns": "1.29.0",
         "gatsby": "1.9.223",
         "gatsby-link": "1.6.38",
