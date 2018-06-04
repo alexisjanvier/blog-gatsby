@@ -91,6 +91,8 @@ VALIDE_USER:1000:1
 VALIDE_USER:1000:1
 ```
 
+Attention, l'utilisateur mappé doit aussi être `owner` des répertoires de stockage dans `/var/lib/docker/`.
+
 Ne reste plus qu'à redemarrer le service docker :
 ```bash
 sudo service docker restart
