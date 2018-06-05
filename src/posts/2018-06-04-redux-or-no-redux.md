@@ -640,7 +640,7 @@ L'intégration de **Redux** dans son [toolkit](https://blog.kentcdodds.com/conce
 
 Ce n'est d'ailleurs pas une nouveauté 😄
 
-<blockquote class="twitter-tweet" data-lang="fr"><p lang="en" dir="ltr">Flux libraries are like glasses: you’ll know when you need them.</p>&mdash; Dan Abramov (@dan_abramov) <a href="https://twitter.com/dan_abramov/status/704304462739939328?ref_src=twsrc%5Etfw">29 février 2016</a></blockquote>
+<blockquote class="twitter-tweet" data-lang="fr"><p lang="en" dir="ltr">You Might Not Need Redux.</p>&mdash; Dan Abramov (@dan_abramov) <a href="https://twitter.com/dan_abramov/status/777983404914671616">19 septembre 2016</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 Mais il existe maintenant de nombreux outils et patterns à ajouter à ce toolkit permettant de répondre simplement aux problématiques de factorisation de comportements (la pattern **render prop**) ou de partage de state (le **Context** React).
