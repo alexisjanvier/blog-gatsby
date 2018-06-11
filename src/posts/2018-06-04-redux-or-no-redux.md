@@ -14,7 +14,7 @@ tags:
 Chez Marmelab on aime beaucoup [Redux](https://redux.js.org/). Il faut dire que son arrivée a été un vrai moment d'évolution dans notre manière de penser nos applications : store immutable, sensibilisation à la programmation fonctionnelle, gestion asynchrone des call API avec les générateurs de Redux-Saga, ... À tel point que l'on a eu tendance à l'intégrer de facto dans notre stack en démarrage de projet.  
 Mais est-ce vraiment une bonne idée ? Pas certain ...
 
-## Un exemple
+## Un Exemple
 
 Prenons une application très simple de gestion de meetup. L'objectif est de pouvoir visualiser :
 
@@ -34,7 +34,7 @@ Voilà à quoi ressemble le projet :
 
 <iframe src="https://codesandbox.io/embed/m5n2xjl6pj?autoresize=1&module=%2Fsrc%2FApp.js&moduleview=1&view=editor" style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;" sandbox="allow-modals allow-forms allow-popups allow-scripts allow-same-origin"></iframe>
 
-Tout commence donc par une application `App.js` qui se charge de monter le store Redux `<Provider store={store}>` et les routes `<ConnectedRouter history={history}>` :
+Cette application commence donc par un composant principal `App.js` qui se charge de monter le store Redux `<Provider store={store}>` et les routes `<ConnectedRouter history={history}>` :
 
  ```js
 // in App.js
@@ -207,9 +207,9 @@ Et tout cela marche très bien. C'est plutôt malin, et pourquoi pas un peu él�
 
 > Vous pouvez trouver le code *complet* sur [GitHub](https://github.com/alexisjanvier/javascript-playground/releases/tag/cra-with-redux)
 
-### Mais il y a un mais
+## C'est Malin, Mais c'est Surtout Très Complexe !
 
-**C'est malin, mais c'est surtout très complexe !** Pas facile de s'y retrouver en arrivant sur l'application tant un certain nombre de comportements relèvent de la *magie*. Car si on récapitule, on obtient les données des talks via une saga branchée sur le routeur qui envoi une action de type fetch interceptée par une autre saga générique qui en cas de succès émet une autre action, action interceptée par le reduceur de la page ayant émis la toute première action de la chaine ...  
+Pas facile de s'y retrouver en arrivant sur l'application tant un certain nombre de comportements relèvent de la *magie*. Car si on récapitule, on obtient les données des talks via une saga branchée sur le routeur qui envoi une action de type fetch interceptée par une autre saga générique qui en cas de succès émet une autre action, action interceptée par le reduceur de la page ayant émis la toute première action de la chaine ...  
 Certains dirons peut-être qu'il s'agit ici d'une utilisation *hors des cloues de Redux*, mais c'est surtout le résultat de plusieurs projets réalisés sur cette stack, avec l'expérience d'écritures répetitives d'actions et de reducers.
 
 Se rajoute à  cette complexité une *plomberie* non négligeable, c'est à dire beaucoup de fichiers répétés pour chaque feature (les actions, les reducers et autres sagas).
@@ -244,9 +244,9 @@ A-t-on des composants enfouis dans le DOM dont l'interaction induit une modifica
 
 On doit donc sûrement pouvoir se passer de Redux.
 
-## Obtenir les données sans Redux
+## Obtenir les Données Sans Redux
 
-Ou plutôt sans **Redux-Saga** chargé de rendre disponibles les données nécessaires à l'affichage de nos pages au niveau du **store** de Redux depuis l'API. On pourrait implémenter toute la logique de fetch au niveau de chaque page. Mais ce serait dupliquer une mécanique très répétitive. Il faut donc trouver une manière générique de réaliser ce fetch sans introduire trop de complexité.  
+Ou plutôt sans utiliser **Redux-Saga**, chargé de rendre disponibles les données nécessaires à l'affichage de nos pages au niveau du **store** de Redux depuis l'API. On pourrait implémenter toute la logique de fetch au niveau de chaque page. Mais ce serait dupliquer une mécanique très répétitive. Il faut donc trouver une manière générique de réaliser ce fetch sans introduire trop de complexité.  
 Et la pattern de [**render prop**](https://cdb.reacttraining.com/use-a-render-prop-50de598f11ce) est particulièrement adaptée à cela !
 
 Nous allons créer un composant `DataProvider` :
@@ -380,7 +380,7 @@ SUM:                            16             64              1            447
 
 Nous sommes donc passés de 819 lignes de code à **442 lignes**, presque moitié moins. Pas mal !
 
-## Se passer du Store de Redux
+## Se Passer du Store de Redux
 
 En l'état, on obtient les données pour chaque page grâce au DataProvider. Mais notre application requière une authentification permettant d'obtenir les informations sur l'utilisateur via un **json-web-token**.  
 Comment va-t-on pouvoir transmettre ces informations sur l'utilisateur aux différents composants sans le store Redux ?  
@@ -634,13 +634,19 @@ export const Header = () => {
 
 Le **Context** de React est un moyen simple de *télétransporter* directement de la donnée d'un composant *N* de l'application à n'importe quel composant enfant *N-x*.
 
-## Conclusion
+## Alors, Avec ou Sans Redux ?
 
-L'intégration de **Redux** dans son [toolkit](https://blog.kentcdodds.com/concerning-toolkits-4db57296e1c3) de démarage de projet n'est sans doute pas une excelente idée. C'est un outil puissant mais il ne correspond pas à tous les cas d'utilisation , il solutionne plutôt une complexité de projet particulière.  
+Redux devient intéressant dès lors qu’un projet atteint un certain niveau de complexité. Mais par expérience, c’est rarement une bonne idée que de préjuger du degré d’intrication de son projet ! Et je préfère de loin garder les choses simples à me dire dès le début : «*Chouette, je vais faire un truc hyper compliqué*». Cela me rappelle il y a quelques années où pour démarrer un projet en Php, on utilisait systématiquement Symfony alors que Silex permettait de démarrer beaucoup plus simplement et rapidement.  
+
+Il n’en reste pas moins que tout comme Symfony, l’utilisation de Redux peut devenir un choix très judicieux.  **C’est juste qu’il est prématuré de prendre cette décision au démarrage du projet.**
 
 Ce n'est d'ailleurs pas une nouveauté 😄
 
 <blockquote class="twitter-tweet" data-lang="fr"><p lang="en" dir="ltr">You Might Not Need Redux.</p>&mdash; Dan Abramov (@dan_abramov) <a href="https://twitter.com/dan_abramov/status/777983404914671616">19 septembre 2016</a></blockquote>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-Mais il existe maintenant de nombreux outils et patterns à ajouter à ce toolkit permettant de répondre simplement aux problématiques de factorisation de comportements (la pattern **render prop**) ou de partage de state (le **Context** React).
+Au delà de ces considérations un peu théoriques, il me semble aussi qu’il existe des effets bénéfiques au fait de ce passer de Redux.
+
+En premier lieu, on se concentre plus sur React ! En codant le second exemple de ce post, j’ai retrouvé le plaisir de construire une application uniquement à partir de briques de composants : c’est comme de jouer aux Lego. L’utilisation des **render prop** permet la re-utilisation de code au sein du projet tout en conservant cette logique d’imbrication de composants de React. C’est un pattern puissant, moins magique que les [HOC](https://reactjs.org/docs/higher-order-components.html), qui pourra le moment venu s’adapter à l’éventuelle implémentation de Redux. J’en veux pour preuve [react-admin 2.0](https://marmelab.com/blog/2018/05/18/react-admin-2-0.html) qui dissocie complètement [la partie UI](https://github.com/marmelab/react-admin/tree/master/packages/ra-ui-materialui) de [la logique applicative](https://github.com/marmelab/react-admin/tree/master/packages/ra-core) grâce aux render props.
+
+Enfin, cela semble l’orientation prise par l’équipe de React qui avec la nouvelle version de l’API Context offre la possibilité de mettre en place un store global facilement partageable sans adopter Redux.
