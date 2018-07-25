@@ -9,6 +9,7 @@
     },
     "dependencies": {
         "babel-plugin-transform-react-remove-prop-types": "0.4.13",
+        "chalk": "2.4.1",
         "date-fns": "1.29.0",
         "front-matter": "2.3.0",
         "fs-extra": "7.0.0",
