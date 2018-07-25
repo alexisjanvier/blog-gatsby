@@ -15,5 +15,5 @@ build: ## Build files for production
 deploy: build ## Deploy static site on surge
 	surge -p public/ -d ajnet-blog-v2.surge.sh
 
-create-post: ## Create interactive post
+new-post: ## Create interactive post
 	node ./create-post.js

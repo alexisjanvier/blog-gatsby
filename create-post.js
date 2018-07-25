@@ -2,7 +2,7 @@
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 const slug = require('slug');
-const { existsSync, readFileSync, readdirSync, writeFileSync } = require('fs');
+const { readFileSync, readdirSync, writeFileSync } = require('fs');
 const format = require('date-fns/format');
 const frontMatter = require('front-matter');
 const fuzzy = require('fuzzy');
@@ -98,15 +98,19 @@ const inquirerTags = (postTags, tags) =>
             return inquirerMoreTags(postTags, tags);
         });
 
-const createBlogpost = ({ answers, postTags }) => {
-    const { title, description } = answers;
+const createBlogpost = ({ title, description, postTags }) => {
+    const postslug = slug(title, {
+        replacement: '-',
+        symbols: true,
+        lower: true
+    });
     const currentDate = new Date();
     const currentFormattedDate = format(currentDate, 'YYYY-MM-DD');
-    const postPath = `./src/posts/${currentFormattedDate}-${slug}.md`;
+    const postPath = `./src/posts/${currentFormattedDate}-${postslug}.md`;
 
     const content = `---
 title: "${title}"
-slug: "${slug(title)}"
+slug: "${postslug}"
 marmelab:
 date: "${currentFormattedDate}"
 description: "${description}"
@@ -125,51 +129,27 @@ ${postTags.map(tag => `- ${tag}`).join('\n')}
 };
 
 Promise.all([getKnownTags()]).then(
-    ([tags]) => console.log(tags)
+    ([tags]) => {
+        inquirer
+            .prompt([
+                {
+                    type: 'input',
+                    message: `Hey! What's the post title?`,
+                    name: 'title',
+                    validate: input => Boolean(input) || 'This is required'
+                },
+                {
+                    type: 'input',
+                    message: `Write a short (usually 1-2 line) description of your post or press Enter to move on`,
+                    name: 'description'
+                }
+            ])
+            .then(answers =>
+                inquirerTags([], tags).then(postTags => ({
+                    ...answers,
+                    postTags
+                }))
+            )
+            .then(createBlogpost);
+    }
 );
-
-// Promise.all([getKnownTags()]).then(
-//     ([activeMembers, tags]) =>
-//         getDefaultAuthor(activeMembers).then(defaultAuthor => {
-//             inquirer
-//                 .prompt([
-//                     {
-//                         type: 'input',
-//                         message: `Hey ${defaultAuthor}! What's your post title?`,
-//                         name: 'title',
-//                         validate: input => Boolean(input) || 'This is required'
-//                     },
-//                     {
-//                         type: 'input',
-//                         message: `What's the post slug?`,
-//                         name: 'slug',
-//                         default: answers =>
-//                             slug(answers.title, { lower: true }),
-//                         validate: input => Boolean(input) || 'This is required'
-//                     },
-//                     {
-//                         type: 'input',
-//                         message: `Write a short (usually 1-2 line) description of your post or press Enter to move on`,
-//                         name: 'excerpt'
-//                     }
-//                 ])
-//                 .then(answers =>
-//                     inquirerAuthors(
-//                         [defaultAuthor],
-//                         activeMembers.filter(
-//                             author => author !== defaultAuthor
-//                         )
-//                     ).then(postAuthors => ({
-//                         answers,
-//                         postAuthors
-//                     }))
-//                 )
-//                 .then(result =>
-//                     inquirerTags([], tags).then(postTags => ({
-//                         ...result,
-//                         postTags
-//                     }))
-//                 )
-//                 .then(createBlogpost);
-//         })
-// );
