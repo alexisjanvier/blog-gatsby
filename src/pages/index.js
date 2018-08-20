@@ -2,6 +2,9 @@ import React from 'react';
 import Link from 'gatsby-link';
 import format from 'date-fns/format';
 import locale from 'date-fns/locale/fr';
+import { graphql } from 'gatsby';
+
+import Layout from '../components/layout';
 
 const styles = {
     marmelab: {
@@ -41,13 +44,15 @@ const PostItem = ({ post }) => {
 
 export default ({ data }) => {
     return (
-        <div>
-            {data.allMarkdownRemark.edges.map(({ node }) => (
-                <div className="blog-list" key={node.id}>
-                    <PostItem post={node.frontmatter} />
-                </div>
-            ))}
-        </div>
+        <Layout>
+            <div>
+                {data.allMarkdownRemark.edges.map(({ node }) => (
+                    <div className="blog-list" key={node.id}>
+                        <PostItem post={node.frontmatter} />
+                    </div>
+                ))}
+            </div>
+        </Layout>
     );
 };
 
