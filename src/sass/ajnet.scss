@@ -19,6 +19,11 @@ header {
     }
 }
 .blog-list {
+    a {
+        &:hover {
+            color: black;
+        }
+    }
     h2 {
         margin-bottom: 0.5rem;
     }

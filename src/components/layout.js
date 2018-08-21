@@ -2,6 +2,7 @@ import Helmet from 'react-helmet';
 import Link from 'gatsby-link';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { StaticQuery, graphql } from 'gatsby';
 
 import TwitterIcon from '../icones/twitter.png';
 import GithubIcon from '../icones/github.png';
@@ -15,7 +16,7 @@ const ListLink = props => (
     </li>
 );
 
-const Template = ({ children, data }) => (
+const TemplateView = ({ children, data }) => (
     <div style={{ margin: `0 auto`, maxWidth: 1000, padding: `1.25rem 1rem` }}>
         <Helmet>
             <title>alexisjanvier.net</title>
@@ -43,26 +44,35 @@ const Template = ({ children, data }) => (
                 </li>
             </ul>
         </header>
-        {children()}
+        {children}
     </div>
 );
 
-Template.propTypes = {
+TemplateView.propTypes = {
     children: PropTypes.any
 };
 
-export const query = graphql`
-    query NavBarQuery {
-        site {
-            siteMetadata {
-                title
-                subtitle
-                twitter
-                github
-                author
+export const Template = props => (
+    <StaticQuery
+        query={graphql`
+            query NavBarQuery {
+                site {
+                    siteMetadata {
+                        title
+                        subtitle
+                        twitter
+                        github
+                        author
+                    }
+                }
             }
-        }
-    }
-`;
+        `}
+        render={data => (
+            <header>
+                <TemplateView data={data} {...props} />
+            </header>
+        )}
+    />
+);
 
 export default Template;
