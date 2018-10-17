@@ -1,0 +1,69 @@
+---
+title: "What did I do today ?"
+slug: "what-did-i-do-today"
+marmelab:
+date: "2018-10-17"
+description: "How to make a usefull tools with basic unix tools"
+tags:
+- cli
+---
+
+
+```bash
+# What did i do today?
+# from https://theptrk.com/2018/07/11/did-txt-file/
+export MDV_THEME=729.8953
+export DID_PATH=~/Documents/Pro/DID
+function did(){
+    if [ ! -f ${DID_PATH}/$(date +%V-%Y).md ]; then
+        echo "# Semaine $(date +"%V (%B %Y)") \n\n## $(date +"%A %d-%m-%Y")" > ${DID_PATH}/$(date +%V-%Y).md
+    fi
+    FILE_EDITION_DATE="$(stat -c "%y"  ${DID_PATH}/$(date +%V-%Y).md)"
+    NOW="$(date +"%Y-%m-%d")"
+    if [ ${FILE_EDITION_DATE:0:10} != ${NOW} ]
+    then
+        echo "\n## $(date +"%A %d-%m-%Y")\n" >> ${DID_PATH}/$(date +%V-%Y).md
+    fi
+    vim +'normal Go' ${DID_PATH}/$(date +%V-%Y).md
+}
+function didv(){
+    if [ $1 ]
+    then
+         vmd ${DID_PATH}/${1}.md
+    else
+         vmd ${DID_PATH}/$(date +%V-%Y).md
+    fi
+}
+function week2Month () {
+    week=$(echo $1 | cut -f1 -d-)
+    year=$(echo $1 | cut -f2 -d-)
+    local dayofweek=1 # 1 for monday, could take the third argument $2
+    date -d "$year-01-01 +$(( $week * 7 + 1 - $(date -d "$year-01-04" +%w ) - 3 )) days -2 days + $dayofweek days" +"%B %Y"
+}
+# alias didl="tree -vrCL 1 --noreport ${DID_PATH}/"
+function didl(){
+    for file in `ls ${DID_PATH}/*.md | sort -Vr`; do
+        filenameRaw="$(basename ${file})"
+        filename="${filenameRaw%.*}"
+        echo "${filename} ($(week2Month ${filename}))"
+    done
+}
+function dids(){
+    if [ $1 ]
+    then
+        #  for file in ${DID_PATH}/*.md; do
+        for file in `ls ${DID_PATH}/*.md | sort -Vr`; do
+            NB_OCCURENCE="$(grep -c ${1} ${file})"
+            if [ ${NB_OCCURENCE} != "0" ]
+            then
+                filenameRaw="$(basename ${file})"
+                filename="${filenameRaw%.*}"
+                # echo "# ${filename} (${NB_OCCURENCE})" | vmd --stdin && grep -n -B 1 ${1} ${file}
+                echo -e "\n\e[32m=> ${filename} ($(week2Month ${filename}), ${NB_OCCURENCE} resultats) \e[0m" && grep -n -B 1 ${1} ${file}
+            fi
+        done
+    else
+         echo "You must add a something to search..."
+    fi
+}
+```
