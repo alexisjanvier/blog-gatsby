@@ -3,7 +3,7 @@ title: "Happy Node.js 11.0.0 Day"
 slug: "happy-nodejs-1100-day"
 marmelab:
 date: "2018-10-26"
-description: "C'est aujourd'hui qu'est sortie la version 11 de Node.js. L'occasion de faire un petit ménage dans mes modules npm installés en global."
+description: "C'est cette semaine qu'est sortie la version 11 de Node.js. L'occasion de faire un petit ménage dans mes modules npm installés en global."
 tags:
 - node-js
 ---
