@@ -16,7 +16,6 @@ module.exports = {
                 path: `${__dirname}/src/`
             }
         },
-        `gatsby-transformer-remark`,
         {
             resolve: `gatsby-plugin-typography`,
             options: {
@@ -27,6 +26,20 @@ module.exports = {
             resolve: `gatsby-transformer-remark`,
             options: {
                 plugins: [
+
+                    {
+                        resolve: 'gatsby-remark-embed-gist',
+                        options: {
+                            // Optional:
+
+                            // the github handler whose gists are to be accessed
+                            // username: 'weirdpattern',
+
+                            // a flag indicating whether the github default gist css should be included or not
+                            // default: true
+                            includeDefaultCss: true
+                        }
+                    },
                     {
                         resolve: `gatsby-remark-prismjs`,
                         options: {
@@ -44,6 +57,7 @@ module.exports = {
             }
         },
         `gatsby-plugin-react-helmet`,
-        `gatsby-plugin-sitemap`
+        `gatsby-plugin-sitemap`,
+        'gatsby-remark-embed-gist'
     ]
 };

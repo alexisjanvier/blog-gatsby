@@ -45,8 +45,9 @@ Qu'à cela ne tienne, j'étais en vacance ce jour de newsletter, ce post documen
 
 ## Un journal par semaine
 
-Pas trop de détails, man, tldr et --help ont été mes amis. Google aussi.
-Pourquoi quotidien ?
+Travaillant en sprint de deux semaines, la découpe de l'unique fichier en plusieurs journaux hebdomadaire c'est tout de suite imposée.
+
+Je ne vais pas rentrer dans les détails de l'implementation mais tout de suite vous montrer le résultat (presque) final:
 
 ```bash
 export DID_PATH=~/.did
@@ -56,7 +57,7 @@ function did(){
     if [ ! -f ${DID_PATH}/$(date +%Y-%V).md ]; then
         echo "# Week $(date +"%V (%B %Y)") \n\n## $(date +"%A %Y-%m-%d")" > ${DID_PATH}/$(date +%Y-%V).md
     fi
-    FILE_EDITION_DATE="$(stat -c "%y"  ${DID_PATH}/$(date +%Y-%V).md)"
+    FILE_EDITION_DATE="$(stat -c "%y" ${DID_PATH}/$(date +%Y-%V).md)"
     NOW="$(date +"%Y-%m-%d")"
     if [ ${FILE_EDITION_DATE:0:10} != ${NOW} ]
     then
@@ -67,19 +68,14 @@ function did(){
 }
 ```
 
-### Une fonction plutôt qu'un alias
+Très clairement, l'option `--help`, `man` et Google ont été mes amis pour arriver à ce résultat. Voici tout de même les points qui me semblent important.
 
-[Bash Shell: Check File Exists or Not - nixCraft](https://www.cyberciti.biz/faq/unix-linux-test-existence-of-file-in-bash/)
+- **Une fonction plutôt qu'un alias** : avec l'introduction d'une logique de type *si le journal existe, alors, sinon*, il a fallut remplacer le simple alias par une fonction shell. `if [ ! -f ${DID_PATH}/$(date +%Y-%V).md ]; then`
+- **La commande `date`** : c'est certainement la commande que j'ai le plus testé. Ici elle est simplement utilisée pour formater la date courante. Comme par exemple `date +%Y-%V`
+- **La commande `stat`** : elle permet de récuperer beaucoup d'information sur un fichier, et notament la date de dernière modification `stat -c "%y" ${DID_PATH}/$(date +%Y-%V).md`. C'est ce qui m'a permis de savoir si le fichier avait déja été éditer dans le journée ou non, pour savoir si il fallait rajouter cette date.
+- **La locale du terminal** : la commande date est sensible à la locale du terminal. J'avais donc des mois et des jours en français. Pour pouvoir tenir mes notes en anglais, il a fallut changer la local du terminal le temps de l'execution de la commande avec un `LC_ALL=C`
+- **La variable d'environnement `DID_PATH`** : cette variable semble très logique, puisqu'elle simplifie l'écriture du script, et permet de changer très facilement le répertoire de stockage des journaux. Mais elle a un effet de bord génial : en utilisant [direnv](https://direnv.net/), cela va permettre de créer très facilement des notes spécifiques par projet !
 
-### La commande `date`
-
-### La commande `stat`
-
-### La locale du terminal
-
-### La variable d'environnement `DID_PATH`
-
-Conjointenement avec direnv
 
 ![la nouvelle commande did](:storage/did/did.gif)
 
@@ -169,7 +165,9 @@ Du python, une dépendance. Mais c'est plus joli Je suis un punk
 
 ## Les commandes finales
 
-Gists justement !
+<script src="https://gist.github.com/alexisjanvier/bfe71d18f68434e29c08637e4d837c74.js"></script>
+
+`gist:alexisjanvier/bfe71d18f68434e29c08637e4d837c74`
 
 ## Conclusion
 Très fun, et tout (ou presque) là ! 50 lignes pour un outil qui marche ! Importance de bien connaitre son outil de travail, man ou tldr.
