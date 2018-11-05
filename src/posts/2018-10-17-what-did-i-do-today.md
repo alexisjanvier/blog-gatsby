@@ -27,13 +27,13 @@ alias did="vim +'normal Go' +'r!date' ~/did.txt"
 
 En une commande, on ouvre dans son terminal - sans quitter son environnement de travail donc - un fichier avec la date du jour dans lequel il ne reste plus qu'à noter cette petite chose que vous venez d'apprendre.
 
-![Did : la commande d'origine](:storage/did/did_init.gif)
+![Did : la commande d'origine](/images/did/did_init.gif)
 
 Et ça m'a beaucoup plu cette idée d'avoir un nouvel outil construit avec ce que l'on a déjà sous la main sur le système. C'est très simple. 
 
 Sans doute un peu trop simple. Par exemple, voici ce qui se passe si on utilise deux fois la commande dans le même journée :
 
-![Sans doute trop simple](:storage/did/did_init_pbl.gif)
+![Sans doute trop simple](/images/did/did_init_pbl.gif)
 
 En fait, très rapidement deux problèmes ont émergé me faisant penser que je n'intégrerais pas cette commande `did`à mon quotidien :
 
@@ -77,7 +77,7 @@ Très clairement, l'option `--help`, `man` et Google ont été mes amis pour arr
 - **La variable d'environnement `DID_PATH`** : cette variable semble très logique, puisqu'elle simplifie l'écriture du script, et permet de changer très facilement le répertoire de stockage des journaux. Mais elle a un effet de bord génial : en utilisant [direnv](https://direnv.net/), cela va permettre de créer très facilement des notes spécifiques par projet !
 
 
-![la nouvelle commande did](:storage/did/did.gif)
+![la nouvelle commande did](/images/did/did.gif)
 
 Première conclusion [Complexity is creepy: It’s never just “one more thing.”](https://medium.com/@kadavy/complexity-is-creepy-its-never-just-one-more-thing-79a6a89192db)
 
