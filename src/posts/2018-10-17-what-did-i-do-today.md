@@ -27,13 +27,13 @@ alias did="vim +'normal Go' +'r!date' ~/did.txt"
 
 En une commande, on ouvre dans son terminal - sans quitter son environnement de travail donc - un fichier avec la date du jour dans lequel il ne reste plus qu'à noter cette petite chose que vous venez d'apprendre.
 
-![Did : la commande d'origine](/images/did/did_init.gif)
+![Did : la commande d'origine](:storage/did/did_init.gif)
 
 Et ça m'a beaucoup plu cette idée d'avoir un nouvel outil construit avec ce que l'on a déjà sous la main sur le système. C'est très simple. 
 
 Sans doute un peu trop simple. Par exemple, voici ce qui se passe si on utilise deux fois la commande dans le même journée :
 
-![Sans doute trop simple](/images/did/did_init_pbl.gif)
+![Sans doute trop simple](:storage/did/did_init_pbl.gif)
 
 En fait, très rapidement deux problèmes ont émergé me faisant penser que je n'intégrerais pas cette commande `did`à mon quotidien :
 
@@ -54,36 +54,38 @@ export DID_PATH=~/.did
 
 function did(){
     export LC_ALL=C
-    if [ ! -f ${DID_PATH}/$(date +%Y-%V).md ]; then
-        echo "# Week $(date +"%V (%B %Y)") \n\n## $(date +"%A %Y-%m-%d")" > ${DID_PATH}/$(date +%Y-%V).md
+    if [ ! -f ${DID_PATH}/$(date +%Y-%V).txt ]; then
+        echo "Week $(date +"%V (%B %Y)") \n\n$(date +"%A %Y-%m-%d")" > ${DID_PATH}/$(date +%Y-%V).txt
     fi
-    FILE_EDITION_DATE="$(stat -c "%y" ${DID_PATH}/$(date +%Y-%V).md)"
+    FILE_EDITION_DATE="$(stat -c "%y" ${DID_PATH}/$(date +%Y-%V).txt)"
     NOW="$(date +"%Y-%m-%d")"
     if [ ${FILE_EDITION_DATE:0:10} != ${NOW} ]
     then
-        echo "\n## $(date +"%A %Y-%m-%d")\n" >> ${DID_PATH}/$(date +%Y-%V).md
+        echo "\n$(date +"%A %Y-%m-%d")\n" >> ${DID_PATH}/$(date +%Y-%V).txt
     fi
     unset LC_ALL
-    vim +'normal Go' ${DID_PATH}/$(date +%Y-%V).md
+    vim +'normal Go' ${DID_PATH}/$(date +%Y-%V).txt
 }
 ```
 
 Très clairement, l'option `--help`, `man` et Google ont été mes amis pour arriver à ce résultat. Voici tout de même les points qui me semblent important.
 
-- **Une fonction plutôt qu'un alias** : avec l'introduction d'une logique de type *si le journal existe, alors, sinon*, il a fallut remplacer le simple alias par une fonction shell. `if [ ! -f ${DID_PATH}/$(date +%Y-%V).md ]; then`
+- **Une fonction plutôt qu'un alias** : avec l'introduction d'une logique de type *si le journal existe, alors, sinon*, il a fallut remplacer le simple alias par une fonction shell. `if [ ! -f ${DID_PATH}/$(date +%Y-%V).txt ]; then`
 - **La commande `date`** : c'est certainement la commande que j'ai le plus testé. Ici elle est simplement utilisée pour formater la date courante. Comme par exemple `date +%Y-%V`
-- **La commande `stat`** : elle permet de récuperer beaucoup d'information sur un fichier, et notament la date de dernière modification `stat -c "%y" ${DID_PATH}/$(date +%Y-%V).md`. C'est ce qui m'a permis de savoir si le fichier avait déja été éditer dans le journée ou non, pour savoir si il fallait rajouter cette date.
+- **La commande `stat`** : elle permet de récuperer beaucoup d'information sur un fichier, et notament la date de dernière modification `stat -c "%y" ${DID_PATH}/$(date +%Y-%V).txt`. C'est ce qui m'a permis de savoir si le fichier avait déja été éditer dans le journée ou non, pour savoir si il fallait rajouter cette date.
 - **La locale du terminal** : la commande date est sensible à la locale du terminal. J'avais donc des mois et des jours en français. Pour pouvoir tenir mes notes en anglais, il a fallut changer la local du terminal le temps de l'execution de la commande avec un `LC_ALL=C`
 - **La variable d'environnement `DID_PATH`** : cette variable semble très logique, puisqu'elle simplifie l'écriture du script, et permet de changer très facilement le répertoire de stockage des journaux. Mais elle a un effet de bord génial : en utilisant [direnv](https://direnv.net/), cela va permettre de créer très facilement des notes spécifiques par projet !
 
 
-![la nouvelle commande did](/images/did/did.gif)
+![la nouvelle commande did](:storage/did/did.gif)
 
-Première conclusion [Complexity is creepy: It’s never just “one more thing.”](https://medium.com/@kadavy/complexity-is-creepy-its-never-just-one-more-thing-79a6a89192db)
+Cette nouvelle commande fait le job car on utilise maintenant un fichier par semaine au lieu d'un unique fichier. Mais cette amélioration illustre assez bien l'article de David Kadavy [*La complexité est flippante : ce n'est jamais "juste une chose de plus"*](https://medium.com/@kadavy/complexity-is-creepy-its-never-just-one-more-thing-79a6a89192db).
 
-- Avec le `did` initial, j'ouvrais toujours le même fichier. Mais maintenant que `did` ouvre le journal de la semaine courante, **comment je vais visualiser mes notes de la semaine dernière** ?
-- Si je veux ouvrir un journal passé, **comment je vais savoir quels journaux existent** ?
-- Avec le `did` inital, je pouvais faire une recherche avec `vim` au sein de mon unique fichier. Mais maintenant, **comment je vais retouver une note au sein de tous les journaux** ?
+En effet, *chose de plus* apporte son lot de questions :
+
+- Avec le `did` initial, j'ouvrais toujours le même fichier. Mais maintenant que `did` ouvre le journal de la semaine courante, **comment vais-je visualiser mes notes de la semaine dernière** ?
+- Si je veux ouvrir un journal passé, **comment vais-je savoir quels journaux existent** ?
+- Avec le `did` inital, je pouvais faire une recherche avec `vim` au sein de mon unique fichier. Mais maintenant, **comment vais-je retouver une note au sein de tous les journaux** ?
 
 ## Visualiser un journal spécifique : `didv`
 
@@ -94,12 +96,12 @@ bat
 function didv(){
     if [ $1 ]
     then
-         vmd ${DID_PATH}/${1}.md
+         cat ${DID_PATH}/${1}.txt
     else
-        if [ ! -f ${DID_PATH}/$(date +%Y-%V).md ]; then
-            LC_ALL=C echo "# Week $(date +"%V (%B %Y)") \n\n## $(date +"%A %Y-%m-%d")" > ${DID_PATH}/$(date +%Y-%V).md
+        if [ ! -f ${DID_PATH}/$(date +%Y-%V).txt ]; then
+            LC_ALL=C echo "# Week $(date +"%V (%B %Y)") \n\n## $(date +"%A %Y-%m-%d")" > ${DID_PATH}/$(date +%Y-%V).txt
         fi
-        vmd ${DID_PATH}/$(date +%Y-%V).md
+        cat ${DID_PATH}/$(date +%Y-%V).txt
     fi
 }
 ```
@@ -120,7 +122,7 @@ function week2Month(){
 
 function didl(){
     export LC_ALL=C
-    for file in `ls ${DID_PATH}/*.md | sort -Mr`; do
+    for file in `ls ${DID_PATH}/*.txt | sort -Mr`; do
         filenameRaw="$(basename ${file})"
         filename="${filenameRaw%.*}"
         echo "${filename} ($(week2Month ${filename}))"
@@ -140,7 +142,7 @@ function dids(){
     export LC_ALL=C
     if [ $1 ]
     then
-        for file in `ls ${DID_PATH}/*.md | sort -Vr`; do
+        for file in `ls ${DID_PATH}/*.txt | sort -Vr`; do
             NB_OCCURENCE="$(grep -c @${1} ${file})"
             if [ ${NB_OCCURENCE} != "0" ]
             then
@@ -165,11 +167,11 @@ Du python, une dépendance. Mais c'est plus joli Je suis un punk
 
 ## Les commandes finales
 
-<script src="https://gist.github.com/alexisjanvier/bfe71d18f68434e29c08637e4d837c74.js"></script>
-
-`gist:alexisjanvier/bfe71d18f68434e29c08637e4d837c74`
+Gists justement !
 
 ## Conclusion
 Très fun, et tout (ou presque) là ! 50 lignes pour un outil qui marche ! Importance de bien connaitre son outil de travail, man ou tldr.
 Le suite : publier en ligne, puisque c'est du markdown !
 low dev, vs low tech
+
+`gist:alexisjanvier/bfe71d18f68434e29c08637e4d837c74`
