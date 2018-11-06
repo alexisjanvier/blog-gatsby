@@ -1,9 +1,9 @@
 ---
 title: Journal intime d'un développeur
-slug: "qu-est-ce-que-j-ai-fait-aujourd-hui"
+slug: journal-intime-dun-developpeur
 marmelab:
 date: "2018-11-03"
-description: "Une chose que j’aime particulièrement dans mon métier de développeur, c’est que l’on apprend tout le temps : un pattern, une lib, une obscure astuce de configuration… Dans le feu de l’action, on se réjouit, mais quelques jours après, souvent, on les oublie. C’est dans ces moments-là que l’on se dit que l’on aurait bien fait prendre des notes."
+description: "Une chose que j’aime particulièrement dans mon métier de développeur, c’est que l’on apprend tout le temps : un pattern, une lib, une obscure astuce de configuration… Dans le feu de l’action, on se réjouit, mais quelques jours après, souvent, on les oublie. C’est dans ces moments-là que l’on se dit que l’on aurait bien fait de la noter."
 tags:
 - cli
 - tool
@@ -26,11 +26,11 @@ alias did="vim +'normal Go' +'r!date' ~/did.txt"
 
 Une commande `did` ouvre dans le terminal - on ne quitte donc pas son environnement de travail - un fichier avec la date du jour au sein duquel il ne reste plus qu'à transcrire cette petite chose que vous venez d'apprendre.
 
-![Did : la commande d'origine](/images/did/did_init.gif)
+![Did : la commande d'origine](:storage/did/did_init.gif)
 
 Et ça m'a beaucoup plu cette idée d'avoir un nouvel outil construit avec ce que l'on a déjà sous la main sur le système. Mais il est sans doute un peu trop simple. Par exemple, voici ce qui se passe si on utilise deux fois la commande dans la même journée :
 
-![Sans doute trop simple](/images/did/did_init_pbl.gif)
+![Sans doute trop simple](:storage/did/did_init_pbl.gif)
 
 En fait, très rapidement deux problèmes ont émergé me faisant penser que je n’intégrerais pas cette commande `did` à mon quotidien :
 
@@ -74,7 +74,7 @@ L'option `--help`, [`man`](https://fr.wikipedia.org/wiki/Man_(Unix)) et Google o
 - **La variable d'environnement `DID_PATH`** : cette variable est très logique, puisqu'elle simplifie l'écriture du script et permet de changer facilement le répertoire de stockage des journaux. Mais elle a un effet de bord génial : en utilisant [direnv](https://direnv.net/), cela va permettre de créer des notes spécifiques par projet !
 
 
-![la nouvelle commande did](/images/did/did.gif)
+![la nouvelle commande did](:storage/did/did.gif)
 
 Cette nouvelle commande fait le boulot puisque l’on utilise maintenant un fichier par semaine au lieu d'un unique fichier. Mais cette amélioration illustre assez bien l'article de David Kadavy [*La complexité est flippante : ce n'est jamais "juste une chose de plus"*](https://medium.com/@kadavy/complexity-is-creepy-its-never-just-one-more-thing-79a6a89192db).
 
@@ -104,13 +104,13 @@ Cette commande est plus simple que `did`, mais elle introduit l'utilisation des 
 `didv` permet d'ouvrir le journal courant et `didv 2018-32` le journal de la semaine 32.
 C'est `cat`qui se charge de l'affichage du fichier.
 
-![Visualiser les journaux avec didv](/images/did/didv_txt.gif)
+![Visualiser les journaux avec didv](:storage/did/didv_txt.gif)
 
 ## Lister les journaux hebdomadaires : didl (list)
 
 Je pensais que la mise en place de la liste des journaux serait la fonctionnalité la plus rapide à mettre en place. J'ai de manière pragmatique tester les commandes `ls` et `tree` : 
 
-![Liste des journaux avec ls et tree](/images/did/ls_tree.gif)
+![Liste des journaux avec ls et tree](:storage/did/ls_tree.gif)
 
 Mais deux choses me dérangeaient : 
 
@@ -138,11 +138,11 @@ function didl(){
 }
 ```
 
-![didl](/images/did/didl.gif)
+![didl](:storage/did/didl.gif)
 
 ## Faire une recherche dans les journaux hebdomadaires : dids (search)
 
-Dernière commande à implémenter : faire une recherche dans les journaux. Et c'est `grep` qui est mis à contribution.
+Et nous voici à la dernière fonctionnalité à implémenter : faire une recherche dans les journaux. C'est `grep` qui est mis à contribution.
 
 ```bash
 function dids(){
@@ -165,22 +165,51 @@ function dids(){
 }
 ```
 
-Pour pouvoir taguer mes notes (et donc limiter la recherche aux tags), j'ai décidé d'utiliser le préfixe `@`, ce qui permet de faire `NB_OCCURENCE="$(grep -c @${1} ${file})"`. Ensuite, l'affichage des résultats n'utilise plus le préfixe, ce qui permet d'afficher les lignes correspondant à la recherche au sein du fichier tagué.
+Pour pouvoir taguer les notes et limiter la recherche à ces tags, j'ai décidé d'utiliser un préfixe `@` aux tags, ce qui permet de faire `NB_OCCURENCE="$(grep -c @${1} ${file})"`. Ensuite, l'affichage des résultats n'utilise plus le préfixe, ce qui permet d'afficher les lignes correspondant à la recherche au sein du fichier tagué.
 
-![dids](/images/did/dids_tag.gif)
+![dids](:storage/did/dids_tag.gif)
 
-## Formater les notes : `markdown`
-Du python, une dépendance. Mais c'est plus joli Je suis un punk
-[View Markdown Files in your Terminal](https://tosbourn.com/view-markdown-files-terminal/)
-[vmd](https://github.com/axiros/terminal_markdown_viewer)
-[GitHub - cpascoe95/vmd: Terminal Markdown Viewer](https://github.com/cpascoe95/vmd)
+## Formater les notes
 
+J'y suis presque ! Je n'ai plus une, mais 4 commandes :
+
+- `did` pour ouvrir le journal de la semaine à la date du jour;
+- `didv` pour visualiser un journal, le journal courant par defaut, mais aussi un journal passé,
+- `didl` pour lister de manière lisible tous les journaux disponibles,
+- `dids` pour faire une recherche au sein de tous les journaux.
+
+Mais un point n'est pas encore réglé :
+
+>  Le fichier est en `.txt`, limitant fortement les possibilités de mise en forme des notes, comme les extraits de code.
+
+Et pour ça, un format de fichier est parfaitement adapté : [**le markdown**](https://www.markdownguide.org/).
+
+![Markdown everywhere](:storage/did/markdown.jpg)
+
+Pas de chance, il n'existe aucun outil de base dans ma console permettant d'afficher de traiter et d'afficher un fichier `.md`. Hors, je me suis fixé une règle :
+
+> *"..., en continuant à n’utiliser que ce qui était déjà disponible dans la console."*
+
+Ce n'est pas grave, je suis un punk. J'ai donc trouvé quelques projets répondant au besoin :
+
+- [Pandoc et Lynx](https://tosbourn.com/view-markdown-files-terminal/)
+- [mdv](https://github.com/axiros/terminal_markdown_viewer)
+- [vmd](https://github.com/cpascoe95/vmd)
+
+J'ai préféré le rendu de `vmd`, ne restait plus qu'à modifier tous les `.txt` en `.md`, d'ajouter quelques `#` et de remplacer `cat` par `vmd` dans la commande `didv` :
+
+![didv en markdown](:storage/did/didv_markdown.gif)
 
 ## Les commandes finales
 
 `gist:alexisjanvier/bfe71d18f68434e29c08637e4d837c74`
 
 ## Conclusion
-Très fun, et tout (ou presque) là ! 50 lignes pour un outil qui marche ! Importance de bien connaitre son outil de travail, man ou tldr.
-Le suite : publier en ligne, puisque c'est du markdown !
-low dev, vs low tech
+
+Je ne sais pas si mon script peut vous servir. Si oui, c'est chouette. Si vous avez des idées pour l'adapter à vos besoins, c'est chouette aussi.
+
+Mais peu importe en fait. Ce n'est pas le script qui est important ici. Ce que j'éspère avoir transmis dans ce post, c'est la satisfaction resentie à construire son propre petit outil à partir de ce qui est disponible sur son système. C'est vraiment très ludique ! Durant cette journée passé à modifier le did.txt initial, j'ai beaucoup appris, beaucoup tester et je suis arrivé au bout du compte à un resultat correspondant exactement à ce dont j'avais besoin. Pas plus, pas moins. C'était un peu du **low dev** (je suis très sensisble en ce moment aux [low tech](https://www.arte.tv/fr/videos/RC-016865/les-escales-de-l-innovation/RC-014864/nomade-des-mers-les-tutos/)).
+
+Alors j'éspère que cette lecture vous aura donné des idées. En ce qui me concerne, je pense m'attaquer rapidement à une commande `didp`. 
+
+Vous avez devinez ? P pour publish ! Et oui, maintenant que j'ai des journaux en `.md`, cela ne devrait pas être très compliquer de les publier sur un serveur, et les faire indexer par un moteur de recherche comme [Algolia](https://www.algolia.com/products/search).
