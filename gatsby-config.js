@@ -57,7 +57,6 @@ module.exports = {
             }
         },
         `gatsby-plugin-react-helmet`,
-        `gatsby-plugin-sitemap`,
-        'gatsby-remark-embed-gist'
+        `gatsby-plugin-sitemap`
     ]
 };

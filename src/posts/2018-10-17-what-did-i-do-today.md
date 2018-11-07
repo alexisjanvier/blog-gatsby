@@ -37,14 +37,13 @@ En fait, très rapidement deux problèmes ont émergé me faisant penser que je 
 - **Toutes les notes sont dans un seul fichier**, et comme il s’agit de notes quotidiennes, ce fichier risque de devenir beaucoup trop long pour être exploitable. L’intérêt de prendre des notes, c’est de pouvoir les relire !
 - **Le fichier est en `.txt`**, limitant fortement les possibilités de mise en forme des notes, comme les extraits de code.
 
-Qu’à cela ne tienne, j’étais en vacance ce jour de newsletter, ce post documente comment j’ai adapté cette bonne idée à ce dont j’avais besoin en tachant de garder la même simplicité que le `did` initial et en continuant à n’utiliser que ce qui était déjà disponible dans la console.
-
+Ce post documente comment j’ai adapté cette bonne idée à ce dont j’avais besoin en tachant de garder la même simplicité que le `did` initial et en continuant à n’utiliser que ce qui était déjà disponible dans la console.
 
 ## Un journal par semaine
 
 Je travaille en cycle (sprint) de deux semaines, aussi la découpe de l’unique fichier en plusieurs journaux hebdomadaires s’est tout de suite imposée.
 
-Je ne vais pas rentrer dans les détails de l’implémentation, voici le résultat (presque) final :
+Je ne vais pas rentrer dans les détails de l’implémentation, voici le résultat (presque) final. L'option `--help`, [`man`](https://fr.wikipedia.org/wiki/Man_(Unix)) et Google ont été mes amis pour arriver à ce résultat.
 
 ```bash
 export DID_PATH=~/.did
@@ -65,7 +64,7 @@ function did(){
 }
 ```
 <br />
-L'option `--help`, [`man`](https://fr.wikipedia.org/wiki/Man_(Unix)) et Google ont été mes amis pour arriver à ce résultat. Voici tout de même les points qui me semblent importants.
+Voici tout de même les points qui me semblent importants.
 
 - **Une fonction plutôt qu'un alias** : avec l'introduction d'une logique de type *si le journal existe, alors, sinon*, il a fallu remplacer le simple alias par une fonction shell. `if [ ! -f ${DID_PATH}/$(date +%Y-%V).txt ]; then`
 - **La commande `date`** : c'est la commande que j'ai le plus testée. Ici elle est simplement utilisée pour formater la date courante. Par exemple `date +%Y-%V`
@@ -80,7 +79,7 @@ Cette nouvelle commande fait le boulot puisque l’on utilise maintenant un fich
 
 En effet, ma *chose de plus* apporte son lot de questions :
 
-- Avec le `did` initial, j'ouvrais toujours le même fichier. Mais maintenant que `did` ouvre le journal de la semaine courante. **Comment vais-je visualiser mes notes de la semaine dernière** ?
+- Avec le `did` initial, j'ouvrais toujours le même fichier. Mais maintenant `did` ouvre le journal de la semaine courante. **Comment vais-je visualiser mes notes de la semaine dernière** ?
 - Si je veux ouvrir un journal passé, **comment vais-je savoir quels journaux existent** ?
 - Avec le `did` initial, je pouvais faire une recherche avec `vim` au sein de mon unique fichier. Mais maintenant, **comment vais-je retrouver une note au sein de tous les journaux** ?
 
