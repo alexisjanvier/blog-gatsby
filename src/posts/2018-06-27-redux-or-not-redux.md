@@ -1,6 +1,6 @@
 ---
 title: "Managing State in React: Redux or not Redux?"
-slug: "managing-state-in-react-redux-or-not-redux?"
+slug: "managing-state-in-react-redux-or-not-redux"
 marmelab: "https://marmelab.com/blog/2018/06/27/redux-or-not-redux.html"
 date: "2018-06-27"
 description: "Redux is a fantastic tool for managing state in React.js, but is it suitable for all situations? Probably not."
