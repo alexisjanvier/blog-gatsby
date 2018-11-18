@@ -4,6 +4,7 @@ slug: journal-intime-dun-developpeur
 marmelab:
 date: "2018-11-07"
 description: "Une chose que j’aime particulièrement dans mon métier de développeur, c’est que l’on apprend tout le temps : un pattern, une lib, une obscure astuce de configuration… Dans le feu de l’action, on se réjouit, mais quelques jours après, souvent, on oublie. C’est dans ces moments-là que l’on se dit que l’on aurait bien fait de prendre des notes."
+cover: devDiary.jpg
 tags:
 - cli
 - tool

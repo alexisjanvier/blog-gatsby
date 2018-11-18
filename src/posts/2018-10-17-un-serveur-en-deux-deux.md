@@ -4,6 +4,7 @@ slug: "un-serveur-en-deux-deux"
 marmelab:
 date: "2018-10-18"
 description: "Comment lancer un projet docker-compose sur un serveur publique en moins de 10 minutes"
+cover: serveur2-2.jpg
 tags:
 - devops
 - aws

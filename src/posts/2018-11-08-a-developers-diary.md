@@ -4,8 +4,7 @@ slug: "a-developers-diary-building-a-notes-taking-app-in-shell"
 marmelab: "https://marmelab.com/blog/2018/11/08/a-developers-diary.html"
 date: "2018-11-08"
 description: "I'm used to recording all the little things I learn from day to day as a developer. Since I didn't find the right note-taking tool to integrate in my daily routine, I coded it. Read on to see what I learned in the process."
-image370x240_5: /images/blog/dev-diary/diary.jpg
-image1024x395: /images/blog/dev-diary/diary_large.jpg
+cover: devDiary.jpg
 tags:
 - shell
 ---

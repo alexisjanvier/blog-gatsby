@@ -4,7 +4,7 @@ slug: "decouvrir-les-service-workers"
 marmelab: "https://marmelab.com/blog/2017/03/21/decouvrir-les-service-workers.html"
 date: "2017-03-21"
 description: "Un outil de plus dans la panoplie des développeurs web ? Les services workers offrent bien plus que la simple possibilité de rendre une application disponible hors-ligne. Voyons ça en pratique."
-image: /images/blog/serviceworkers/catWorker.jpg
+cover: serviceWorker.jpg
 tags:
 - js
 - tutorial

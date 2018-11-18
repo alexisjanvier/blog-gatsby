@@ -37,6 +37,14 @@ export default ({ data }) => {
                     <title>{post.frontmatter.title}</title>
                     <meta name="description" content={post.frontmatter.description} />
                     <meta name="keywords" content={`${post.frontmatter.tags}`} />
+                    <meta property="og:title" content={post.frontmatter.title} />
+                    <meta property="og:description" content={post.frontmatter.description} />
+                    {post.frontmatter.cover && <meta property="og:image" content={`https://www.alexisjanvier.net/covers/${post.frontmatter.cover}`} />}
+                    <meta property="og:url" content={`https://www.alexisjanvier.net/${post.frontmatter.slug}`} />
+                    <meta name="twitter:card" content="summary_large_image" />
+                    <meta property="og:site_name" content="alexisjanvier.net" />
+                    <meta name="twitter:image:alt" content={post.frontmatter.title} />
+                    <meta name="twitter:site" content="@alexisjanvier" />
                 </Helmet>
                 <div className="postIntro">
                     <h1>{post.frontmatter.title}</h1>
@@ -55,10 +63,12 @@ export const query = graphql`
         markdownRemark(frontmatter: { slug: { eq: $slug } }) {
             html
             frontmatter {
-                title
+                cover
                 date
-                tags
                 description
+                slug
+                tags
+                title
             }
         }
     }

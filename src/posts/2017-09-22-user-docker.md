@@ -6,6 +6,7 @@ date: "2017-09-22"
 tags:
   - "docker"
 description: "L'un des problèmes très classiques lorsque l'on utilise Docker, c'est que l'utilisateur d'un container est root par défaut. Du coup, on peut rencontrer des problèmes de droits sur les répertoires générés au sein de ce container."
+cover: userDocker.jpg
 ---
 
 L'un des problèmes très classiques lorsque l'on utilise Docker, c'est que l'utilisateur d'un container est `root` par défaut. Du coup, on peut rencontrer des problèmes de droits sur les répertoires générés au sein de ce container.

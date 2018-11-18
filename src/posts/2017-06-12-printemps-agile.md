@@ -4,7 +4,7 @@ slug: "5e-edition-du-printemps-agile-de-caen"
 marmelab: "https://marmelab.com/blog/2017/06/12/printemps-agile.html"
 date: "2017-06-12"
 description: "Jusqu'à présent, la ville de Caen était réputée pour sa scène rock (The Lanskies, Cannibale, Grand Parc) et electro (Baadman, Superpoze, Fakear). Mais elle risque également de le devenir pour son dynamisme autour de l'agilité."
-image: /images/blog/printempsagile/printempsAgile1.jpg
+cover: printempsAgiles.jpg
 tags:
     - agile
     - serious-games

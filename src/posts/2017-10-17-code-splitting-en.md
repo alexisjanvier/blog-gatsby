@@ -4,8 +4,7 @@ slug: "running-react-router-v4,-redux-saga,-ssr-and-code-splitting-together"
 marmelab: "https://marmelab.com/blog/2017/10/17/code-splitting.html"
 date: "2017-10-17"
 description: "Code splitting and server-side rendering are two ways of making a React app fast. Let's put them together in practice, with Redux, Sagas and React Router V4."
-image: /images/blog/code-splitting/splitting.jpg
-image1024x395: /images/blog/code-splitting/splitting.jpg
+cover: codeSplitting.jpg
 tags:
 - react
 - tutorial

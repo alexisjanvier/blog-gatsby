@@ -4,6 +4,7 @@ slug: "avec-ou-sans-redux"
 marmelab:
 date: "2018-06-04"
 description: "Redux est un outil fantastique, mais convient-t-il à toutes les situations ? Sans doute pas."
+cover: reduxOrNot.jpg
 tags:
 - react
 - redux
