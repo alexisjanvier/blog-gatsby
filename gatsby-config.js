@@ -57,6 +57,15 @@ module.exports = {
             }
         },
         `gatsby-plugin-react-helmet`,
+        {
+            resolve: `gatsby-plugin-google-analytics`,
+            options: {
+                trackingId: 'UA-129388047-1',
+                head: false,
+                anonymize: true,
+                respectDNT: true
+            }
+        },
         `gatsby-plugin-sitemap`
     ]
 };
