@@ -37,13 +37,17 @@ export default ({ data }) => {
                     <title>{post.frontmatter.title}</title>
                     <meta name="description" content={post.frontmatter.description} />
                     <meta name="keywords" content={`${post.frontmatter.tags}`} />
-                    <meta property="og:title" content={post.frontmatter.title} />
+                    <meta property="og:title" content={post.frontmatter.description} />
                     <meta property="og:description" content={post.frontmatter.description} />
                     {post.frontmatter.cover && <meta property="og:image" content={`https://www.alexisjanvier.net/covers/${post.frontmatter.cover}`} />}
                     <meta property="og:url" content={`https://www.alexisjanvier.net/${post.frontmatter.slug}`} />
-                    <meta name="twitter:card" content="summary_large_image" />
                     <meta property="og:site_name" content="alexisjanvier.net" />
+                    <meta name="twitter:title" content={post.frontmatter.title} />
+                    <meta name="twitter:description" content={post.frontmatter.description} />
+                    {post.frontmatter.cover && <meta name="twitter:image" content={`https://www.alexisjanvier.net/covers/${post.frontmatter.cover}`} />}
+                    <meta name="twitter:card" content="summary_large_image" />
                     <meta name="twitter:image:alt" content={post.frontmatter.title} />
+                    <meta name="twitter:creator" content="@alexisjanvier" />
                     <meta name="twitter:site" content="@alexisjanvier" />
                 </Helmet>
                 <div className="postIntro">
