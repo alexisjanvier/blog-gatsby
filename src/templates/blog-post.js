@@ -37,7 +37,10 @@ export default ({ data }) => {
                     <title>{post.frontmatter.title}</title>
                     <meta name="description" content={post.frontmatter.description} />
                     <meta name="keywords" content={`${post.frontmatter.tags}`} />
-                    <meta property="og:title" content={post.frontmatter.description} />
+                    <meta itemProp="name" content={post.frontmatter.title} />
+                    <meta itemProp="description" content={post.frontmatter.description} />
+                    {post.frontmatter.cover && <meta itemProp="image" content={`https://www.alexisjanvier.net/covers/${post.frontmatter.cover}`} />}
+                    <meta property="og:title" content={post.frontmatter.title} />
                     <meta property="og:description" content={post.frontmatter.description} />
                     {post.frontmatter.cover && <meta property="og:image" content={`https://www.alexisjanvier.net/covers/${post.frontmatter.cover}`} />}
                     <meta property="og:url" content={`https://www.alexisjanvier.net/${post.frontmatter.slug}`} />

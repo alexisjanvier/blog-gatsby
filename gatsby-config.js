@@ -1,7 +1,7 @@
 module.exports = {
     siteMetadata: {
         title: "This is not 'Nam.",
-        subtitle: 'This is my blog. There are rules.',
+        subtitle: 'This is web development. There are rules.',
         twitter: `alexisjanvier`,
         github: `alexisjanvier`,
         author: `Àlexis Janvier`,
