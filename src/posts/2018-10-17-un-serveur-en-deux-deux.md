@@ -31,23 +31,31 @@ Ensuite, le gros point noir de l'instance, c'est ses 512 Mo de mémoire, vraimen
 Pour cela, il faut créer un fichier de swap de 1Go (1024 * 1024MB => 1048576)
 
 ```bash
-sudo dd if=/dev/zero of=/swapfile1 bs=1024 count=1048576
-sudo chown root:root /swapfile1
-sudo chmod 0600 /swapfile1
+sudo dd if=/dev/zero of=/swapfile bs=1024 count=1048576
+sudo chown root:root /swapfile
+sudo chmod 0600 /swapfile
+```
+
+Si `faillocate` est installé sur le serveur, on peut encore plus simplement faire:
+
+```bash
+sudo allocate -l 1G /swapfile
+sudo chown root:root /swapfile
+sudo chmod 0600 /swapfile
 ```
 
 Puis l'activer
 
 ```bash
-sudo mkswap /swapfile1
-sudo swapon /swapfile1
+sudo mkswap /swapfile
+sudo swapon /swapfile
 ```
 
 Pour que le swap soit toujours présent en cas de reboot de l'instance, il faut ajouter le swap au fichier `fstab` :
 
 ```bash
 # in /etc/fstab
-/swapfile1 none swap sw 0 0
+/swapfile none swap sw 0 0
 ```
 
 Vérifions la mise en place du swap avec la commande `free -m` :
