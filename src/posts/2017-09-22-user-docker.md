@@ -13,7 +13,7 @@ L'un des problèmes très classiques lorsque l'on utilise Docker, c'est que l'ut
 
 Par exemple, imaginons que nous utilisions un container pour faire le build d'une application *create-react -app*: le répertoire `build` généré aura les droits de root au niveau du host. Si ce n'est pas dramatique, c'est parfois problématique, particulièrement si l'on veut automatiser une tâche sur ce répertoire au niveau du host (par exemple via une recette make).
 
-```makfile
+```makefile
 // in makefile
 docker-build:
     NODE_ENV=production docker-compose run --no-deps --rm client npm run build
@@ -65,7 +65,7 @@ On va ainsi pouvoir indiquer à Docker un utilisateur qui sera mapper par défau
 
 Pour un Docker lancé en `daemon`, il faut créer le fichier `/etc/docker/daemon.json` et déclarer l'utilisateur à mapper grâce au flag `userns-remap`
 
-```ỳaml
+```yaml
 //in /etc/docker/daemon.json
 {
   "userns-remap": "VALIDE_USER"
