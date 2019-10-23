@@ -93,7 +93,7 @@ describe('Object API endpoint', () => {
 });
 ```
 
-Mais cela peut devenir rapidement fastidieux de créer ces fixtures et surtout de les maintenir. Sur l'un de nos projet client, nous avions une API testée fonctionnellement et dépendante de deux API. Lorsque une troisième API a été implémenté, nous en avons profité pour changer notre stratégie de mock. Nous nous sommes tourné vers [Polly.js](https://netflix.github.io/pollyjs/#/), une librairie maintenue par Netflix, qui permet d'enregistrer tous les appels fait à une ou plusieurs API en mode `RECORD` et de les rejouer en mode `REPLAY`. Voici le retour d'expérience de cette implémentation.
+Mais cela peut devenir rapidement fastidieux de créer ces fixtures et surtout de les maintenir. Sur l'un de nos projets client, nous avions une API testée fonctionnellement et dépendante de trois autres API. Lorsque une quatrième API a été implémenté, nous en avons profité pour changer notre stratégie de mock. Nous nous sommes tourné vers [Polly.js](https://netflix.github.io/pollyjs/#/), une librairie maintenue par Netflix, qui permet d'enregistrer tous les appels fait à une ou plusieurs API en mode `RECORD` et de les rejouer en mode `REPLAY`. Voici le retour d'expérience de cette implémentation.
 
 ## Première Mise en Place
 
@@ -349,10 +349,10 @@ describe('Object API endpoint', () => {
 
 ## Conclusion
 
-Polly.js est sans aucun doute une bonne librairie pour enregistrer et rejouer des appels d'API. La documentation est très propre, et elle est maintenue par un boite qui devrait durée.
+Polly.js est sans aucun doute une bonne librairie pour enregistrer et rejouer des appels d'API. La documentation est très propre, et elle est maintenue par un boite qui devrait durer.
 
 Mais sa mise en place n'est pas sans chausses-trappes, et demande donc d'être bien attentif aux enregistrements réalisés, même si de part leur taille, leur review n'est pas évidente sur Github.
 
 On aurait aimé que des problématiques aussi classique que l'exclusion de certaines url (particulièrement le localhost !) ou l'exclusion de certain en-têtes d'authentification puissent être plus simplement géré, par exemple depuis la configuration ! 
 
-Mais cela fait une bonne occasion de réaliser une PR sur le github du projet à durant ce mois d'HacktoberFest !
+Mais c'est peut-être aussi que Polly.js n'était le bon outil pour répondre à notre problématique ? Si son utilisation semble bien adaptée au mock d'une API frontale, par exemple pour tester une application consommatrice de l'API comme une application web, Polly s'en sort moins bien quand il s'agit de mocker de multiples appels à des API différentes. Dans ce cas, Polly nécessitte beaucoup de configuration et de hacks, avec des résultats parfois inattendus...
