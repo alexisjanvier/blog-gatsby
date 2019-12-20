@@ -67,6 +67,7 @@ const TemplateView = ({ children, data }) => {
                     </li>
                 </ul>
             </header>
+            <div><a href="https://onestla.tech/"><img src="onestlatech.jpg" alt="onestla.tech" /></a></div>
             {children}
         </div>
     );
