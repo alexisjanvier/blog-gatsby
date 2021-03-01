@@ -31,7 +31,7 @@
     "inquirer-autocomplete-prompt": "1.0.1",
     "inquirer-search-checkbox": "1.0.0",
     "node-sass": "4.12.0",
-    "prismjs": "1.16.0",
+    "prismjs": "1.23.0",
     "react": "16.8.6",
     "react-dom": "16.8.6",
     "react-gravatar": "^2.6.3",
